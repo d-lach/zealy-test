@@ -3,8 +3,14 @@ import { useReactions } from "../contexts/ReactionsContext";
 import { Reaction } from "./Reaction";
 export const MainScreen = () => {
   const { width, height, ref } = useResizeDetector();
-  const { addReaction, reactions } = useReactions();
+  const { addReaction, reactions, isAnyReactionOpen, closeAllReactions } =
+    useReactions();
   const handleClick = (e) => {
+    if (isAnyReactionOpen) {
+      closeAllReactions();
+      return;
+    }
+
     const x = Math.max(e.clientX - 15, 0); // -15 to offset cursor dimensions
     const y = Math.max(e.clientY - 15, 0);
     addReaction({ x: (x / width) * 100, y: (y / height) * 100 });

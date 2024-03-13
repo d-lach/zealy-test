@@ -3,7 +3,6 @@ import { FaRegMeh, FaRegSmile, FaRegTired } from "react-icons/fa";
 import Tooltip from "./Tooltip";
 import { useToggle } from "react-use";
 import { useReactions } from "../contexts/ReactionsContext";
-import useClickOutside from "../hooks/useClickOutside";
 import classNames from "classnames";
 const Icons = {
   smile: FaRegSmile,
@@ -12,13 +11,12 @@ const Icons = {
 };
 
 export const Reaction = ({ reaction }) => {
-  const [isTooltipVisible, toggleTooltip] = useToggle(false);
   const ref = React.useRef();
-  useClickOutside(ref, () => toggleTooltip(false));
 
   const [inputText, setInputText] = useState(reaction.text);
   const [isEditing, toggleEdition] = useToggle(true);
-  const { updateReactionText, updateReactionType } = useReactions();
+  const { updateReactionText, updateReactionType, toggleReactionOpen } =
+    useReactions();
 
   useEffect(() => {
     setInputText(reaction.text);
@@ -27,11 +25,10 @@ export const Reaction = ({ reaction }) => {
   const handleClick = (event) => {
     event.preventDefault();
     event.stopPropagation();
-    toggleTooltip();
   };
 
-  const handleIconClick = (e) => {
-    e.stopPropagation();
+  const handleIconClick = (event) => {
+    toggleReactionOpen(reaction.id, true);
     toggleEdition(true);
   };
 
@@ -57,15 +54,16 @@ export const Reaction = ({ reaction }) => {
     <div
       ref={ref}
       className="absolute"
-      onClick={handleIconClick}
       style={{ left: `${reaction.x}%`, top: `${reaction.y}%` }}
+      onClick={handleClick}
     >
       <div
         className={
           "hover:bg-gray-200 text-green-50 cursor-pointer rounded-lg p-2 relative group"
         }
+        onClick={handleIconClick}
       >
-        {inputText && !isTooltipVisible && (
+        {inputText && !reaction.isOpen && (
           <span className="absolute -top-[100%] z-10 left-1/2 -translate-x-1/2 bg-white border-black border text-black text-xs rounded py-1 px-2 hidden group-hover:block before:absolute before:top-full before:left-1/2 before:-translate-x-1/2 before:border-8 before:border-transparent before:border-t-black before:content-['']">
             {inputText}
           </span>
@@ -77,10 +75,9 @@ export const Reaction = ({ reaction }) => {
             "text-red-600": reaction.type === "sad",
           })}
           size="24"
-          onClick={handleClick}
         />
       </div>
-      <Tooltip isVisible={isTooltipVisible}>
+      <Tooltip isVisible={reaction.isOpen}>
         <div className="flex flex-col gap-2">
           <div className="flex space-x-2 mt-2">
             {Object.entries(Icons).map(([type, Icon]) => (
