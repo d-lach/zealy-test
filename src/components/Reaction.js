@@ -3,9 +3,12 @@ import { FaSmile } from "react-icons/fa";
 import Tooltip from "./Tooltip";
 import { useToggle } from "react-use";
 import { useReactions } from "../contexts/ReactionsContext";
+import useClickOutside from "../hooks/useClickOutside";
 
 export const Reaction = ({ reaction }) => {
   const [isTooltipVisible, toggleTooltip] = useToggle(false);
+  const ref = React.useRef();
+  useClickOutside(ref, () => toggleTooltip(false));
 
   const [inputText, setInputText] = useState(reaction.text);
   const [isEditing, toggleEdition] = useToggle(true);
@@ -41,6 +44,7 @@ export const Reaction = ({ reaction }) => {
 
   return (
     <div
+      ref={ref}
       className="absolute"
       onClick={handleIconClick}
       style={{ left: `${reaction.x}%`, top: `${reaction.y}%` }}
