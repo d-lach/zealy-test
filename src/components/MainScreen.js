@@ -16,7 +16,7 @@ export const MainScreen = () => {
       className="w-screen h-screen bg-gray-100 relative"
       onClick={handleClick}
       style={{
-        backgroundSize: "250px 250px",
+        backgroundSize: "30% 30%",
         backgroundImage:
           "linear-gradient(to right, gray 1px, transparent 1px), linear-gradient(to bottom, gray 1px, transparent 1px)",
       }}
