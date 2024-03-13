@@ -21,16 +21,8 @@ export const MainScreen = () => {
           "linear-gradient(to right, gray 1px, transparent 1px), linear-gradient(to bottom, gray 1px, transparent 1px)",
       }}
     >
-      <div>
-        Dimensions: {width}x{height}
-      </div>
       {reactions.map((reaction) => (
         <Reaction key={reaction.id} reaction={reaction} />
-      ))}
-      {reactions.map((pos, index) => (
-        <div key={index}>
-          Click at x: {pos.x}%, y: {pos.y}%
-        </div>
       ))}
     </div>
   );
