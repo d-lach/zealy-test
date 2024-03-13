@@ -56,15 +56,20 @@ export const Reaction = ({ reaction }) => {
   return (
     <div
       ref={ref}
-      className="absolute "
+      className="absolute"
       onClick={handleIconClick}
       style={{ left: `${reaction.x}%`, top: `${reaction.y}%` }}
     >
       <div
         className={
-          "hover:bg-gray-200 text-green-50 cursor-pointer rounded-lg p-2"
+          "hover:bg-gray-200 text-green-50 cursor-pointer rounded-lg p-2 relative group"
         }
       >
+        {inputText && !isTooltipVisible && (
+          <span className="absolute -top-[100%] z-10 left-1/2 -translate-x-1/2 bg-white border-black border text-black text-xs rounded py-1 px-2 hidden group-hover:block before:absolute before:top-full before:left-1/2 before:-translate-x-1/2 before:border-8 before:border-transparent before:border-t-black before:content-['']">
+            {inputText}
+          </span>
+        )}
         <Icon
           className={classNames({
             "text-green-600": reaction.type === "smile",
