@@ -24,11 +24,8 @@ export const MainScreen = () => {
       <div>
         Dimensions: {width}x{height}
       </div>
-      {reactions.map((reaction, index) => (
-        <Reaction
-          key={index}
-          style={{ left: `${reaction.x}%`, top: `${reaction.y}%` }}
-        />
+      {reactions.map((reaction) => (
+        <Reaction key={reaction.id} reaction={reaction} />
       ))}
       {reactions.map((pos, index) => (
         <div key={index}>
