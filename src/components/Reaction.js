@@ -56,22 +56,32 @@ export const Reaction = ({ reaction }) => {
   return (
     <div
       ref={ref}
-      className="absolute"
+      className="absolute "
       onClick={handleIconClick}
       style={{ left: `${reaction.x}%`, top: `${reaction.y}%` }}
     >
-      <Icon
-        className="text-gray-500 hover:text-gray-700 cursor-pointer"
-        size="24"
-        onClick={handleClick}
-      />
+      <div
+        className={
+          "hover:bg-gray-200 text-green-50 cursor-pointer rounded-lg p-2"
+        }
+      >
+        <Icon
+          className={classNames({
+            "text-green-600": reaction.type === "smile",
+            "text-black": reaction.type === "neutral",
+            "text-red-600": reaction.type === "sad",
+          })}
+          size="24"
+          onClick={handleClick}
+        />
+      </div>
       <Tooltip isVisible={isTooltipVisible}>
         <div className="flex flex-col gap-2">
           <div className="flex space-x-2 mt-2">
             {Object.entries(Icons).map(([type, Icon]) => (
               <div
                 key={`reaction-icon-${type}`}
-                className={classNames("p-1 cursor-pointer rounded", {
+                className={classNames("p-1 cursor-pointer rounded-lg", {
                   "bg-blue-200": type === reaction.type,
                 })}
                 onClick={() => selectIcon(type)}
@@ -93,12 +103,12 @@ export const Reaction = ({ reaction }) => {
                 onKeyDown={handleKeyDown}
               />
             ) : (
-              <span
+              <div
                 onClick={toggleEdition}
                 className="cursor-pointer min-w-[200px]"
               >
                 {inputText || "Enter your comment"}
-              </span>
+              </div>
             )}
           </div>
         </div>
