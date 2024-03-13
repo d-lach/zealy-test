@@ -1,21 +1,19 @@
-import { useState } from "react";
 import { useResizeDetector } from "react-resize-detector";
+import { useReactions } from "../contexts/ReactionsContext";
+import { Reaction } from "./Reaction";
 export const MainScreen = () => {
-  const [clickPositions, setClickPositions] = useState([]);
   const { width, height, ref } = useResizeDetector();
+  const { addReaction, reactions } = useReactions();
   const handleClick = (e) => {
     const x = e.clientX;
     const y = e.clientY;
-    setClickPositions([
-      ...clickPositions,
-      { x: (x / width) * 100, y: (y / height) * 100 },
-    ]);
+    addReaction({ x: (x / width) * 100, y: (y / height) * 100 });
   };
 
   return (
     <div
       ref={ref}
-      className="w-screen h-screen bg-gray-100"
+      className="w-screen h-screen bg-gray-100 relative"
       onClick={handleClick}
       style={{
         backgroundSize: "250px 250px",
@@ -26,7 +24,13 @@ export const MainScreen = () => {
       <div>
         Dimensions: {width}x{height}
       </div>
-      {clickPositions.map((pos, index) => (
+      {reactions.map((reaction, index) => (
+        <Reaction
+          key={index}
+          style={{ left: `${reaction.x}%`, top: `${reaction.y}%` }}
+        />
+      ))}
+      {reactions.map((pos, index) => (
         <div key={index}>
           Click at x: {pos.x}%, y: {pos.y}%
         </div>
