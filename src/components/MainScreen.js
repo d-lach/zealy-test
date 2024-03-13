@@ -5,8 +5,8 @@ export const MainScreen = () => {
   const { width, height, ref } = useResizeDetector();
   const { addReaction, reactions } = useReactions();
   const handleClick = (e) => {
-    const x = e.clientX;
-    const y = e.clientY;
+    const x = Math.max(e.clientX - 15, 0); // -15 to offset cursor dimensions
+    const y = Math.max(e.clientY - 15, 0);
     addReaction({ x: (x / width) * 100, y: (y / height) * 100 });
   };
 
